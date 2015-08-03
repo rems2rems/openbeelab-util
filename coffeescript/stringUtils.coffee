@@ -1,3 +1,4 @@
+require("./arrayUtils").install()
 
 utils = 
 
@@ -15,12 +16,27 @@ utils =
 
     repeat : (n)-> return Array(n).join(@)
 
+    generateToken : (length)->
+
+        token = ""
+        length.times ->
+
+            letter = ['a'..'z'].pickRandom()[['toLowerCase','toUpperCase'].pickRandom()]()
+            digit = [0..9].pickRandom()
+            token += [letter,digit].pickRandom()
+
+        return token
+
 utils.install = ->
 
     for methodName,method of utils
 
-        if not String::[methodName]? and methodName isnt "install"
+        if not String::[methodName]? and (methodName isnt "install" or methodName isnt "generateToken")
 
             String::[methodName] = method
+
+    if not String.generateToken?
+
+        String.generateToken = utils.generateToken
 
 module.exports = utils
