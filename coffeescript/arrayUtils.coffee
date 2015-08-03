@@ -1,22 +1,5 @@
-# Copyright 2012-2014 OpenBeeLab.
-# This file is part of the OpenBeeLab project.
 
-# The OpenBeeLab project is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-
-# The OpenBeeLab project is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with OpenBeeLab.  If not, see <http://www.gnu.org/licenses/>.
-
-
-module.exports = 
-    
+utils = 
     sum : ->
         
         return @reduce ((memo,n)->n+memo),0
@@ -31,10 +14,9 @@ module.exports =
 
     sortComparables : ->
         
-        if @length == 0
-            return []
+        if @length < 2 then return @
 
-        return @sort(@[0].constructor.comparator)
+        return @sort (a,b) -> a.compareTo b
 
     pluck : (prop) ->
         @map((e) -> e[prop])
@@ -42,8 +24,9 @@ module.exports =
     dup : -> @slice()
 
     remove : (e) -> 
-        @splice @indexOf(e), 1
-        @
+        res = @dup()
+        res.splice @indexOf(e), 1
+        return res
     
     removeAll : (other) -> 
         @filter (e) -> 
@@ -57,7 +40,7 @@ module.exports =
         return null if @.length == 0
         max = @[0]
         @forEach (e) -> 
-            if e?.greaterThan max
+            if e?.isGreaterThan max
                 max = e
     
         return max
@@ -66,19 +49,13 @@ module.exports =
         return null if @.length == 0
         min = @[0]
         @forEach (e) -> 
-            if e?.lesserThan min
+            if e?.isLesserThan min
                 min = e
         
         return min
 
-    contain : (e) ->
+    contains : (e) ->
         return @indexOf(e)>=0
-
-    is_in : (collection) ->
-        return collection.contain @.valueOf()
-
-    not_in : (collection) ->
-        return !@is_in(collection)
 
     shuffle: ->
 
@@ -100,8 +77,17 @@ module.exports =
     isEmpty : -> @length == 0
     
     cycle: (nb,cb)->
-        nb.times =>
-            @forEach cb
+        if nb? and cb?
+            nb.times =>
+                for elem in @
+                    cb(elem)
+            return
+
+        if nb? and not cb?
+            cb = nb
+            nb = "infinity!"
+            #todo return an iterator
+
 
     head : -> @[0]
 
@@ -111,8 +97,42 @@ module.exports =
 
     last: -> @[@length-1]
 
-    isArray: -> Object::toString.call(@) == '[object Array]'
+    combinations : (k) ->
+    
+        if k > @length or k <= 0
+            return []
+            
+        if k == @length
+            return [@]
+        
+        
+        if k == 1
+            return ([elem] for elem in @)
+        
+        combs = []
+        for i in [0..(@length - k + 1)]
+            head = @slice(i, i+1)
+            tailcombs = @slice(i + 1).combinations(k - 1)
+            for tailcomb in tailcombs
+                combs.push(head.concat(tailcomb))
+        
+        return combs
+    
+    compareTo : (other) -> return @length - other.length
 
+for own methodName,method of require './comparable'
 
+    utils[methodName] = method
 
+    
+utils.install = ->
 
+    for methodName,method of utils
+
+        if not Array::[methodName]? and methodName isnt "install"
+
+            Array::[methodName] = method
+
+    Object::isArray = -> Object::toString.call(@) == '[object Array]'
+
+module.exports = utils

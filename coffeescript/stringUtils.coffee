@@ -1,36 +1,26 @@
-# Copyright 2012-2014 OpenBeeLab.
-# This file is part of the OpenBeeLab project.
 
-# The OpenBeeLab project is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
+utils = 
 
-# The OpenBeeLab project is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+    contains : (str) -> return @indexOf(str)>=0
 
-# You should have received a copy of the GNU General Public License
-# along with OpenBeeLab.  If not, see <http://www.gnu.org/licenses/>.
-
-
-if not String::contain?
-
-    String::contain = (str) -> return @indexOf(str)>=0
-
-if not String::toInt?
-
-    String::toInt = -> return parseInt(@,10)
-
-if not String::startWith?
+    toInt : -> return parseInt(@,10)
     
-    String::startWith = (str) -> return @indexOf(str) == 0
-
-if not String::replaceAll?
+    startsWith : (str) -> return @indexOf(str) == 0
     
-    String::replaceAll = (str1,str2) -> return @replace(new RegExp(str1, 'g'), str2)
-
-if not String::isEmpty?
+    endsWith : (str) -> return @indexOf(str) == (@length-1)
     
-    String::isEmpty = () -> return @ is null or @ is ""
+    replaceAll : (str1,str2) -> return @replace(new RegExp(str1, 'g'), str2)
+    
+    isEmpty : () -> return @ is null or @ is ""
+
+    repeat : (n)-> return Array(n).join(@)
+
+utils.install = ->
+
+    for methodName,method of utils
+
+        if not String::[methodName]? and methodName isnt "install"
+
+            String::[methodName] = method
+
+module.exports = utils
