@@ -1,11 +1,12 @@
 require("./arrayUtils").install()
+require("./numberUtils").install()
 
 utils = 
 
     contains : (str) -> return @indexOf(str)>=0
 
     toInt : -> return parseInt(@,10)
-    
+
     startsWith : (str) -> return @indexOf(str) == 0
     
     endsWith : (str) -> return @indexOf(str) == (@length-1)
@@ -15,6 +16,8 @@ utils =
     isEmpty : () -> return @ is null or @ is ""
 
     repeat : (n)-> return Array(n).join(@)
+
+    compareTo : (other) -> return @localCompare(other)
 
     generateToken : (length)->
 
@@ -26,6 +29,10 @@ utils =
             token += [letter,digit].pickRandom()
 
         return token
+
+for own methodName,method of require './comparable'
+
+    utils[methodName] = method
 
 utils.install = ->
 
