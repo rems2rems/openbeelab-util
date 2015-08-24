@@ -12,6 +12,10 @@ utils =
     ceil : ->
 
         return Math.ceil(@)
+    
+    abs : ->
+
+        return Math.abs(@)
 
     compareTo : (other) -> return @ - other
 
