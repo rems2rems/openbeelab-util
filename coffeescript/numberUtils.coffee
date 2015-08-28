@@ -17,6 +17,10 @@ utils =
 
         return Math.abs(@)
 
+    sign : ->
+
+        return @ && @ / Math.abs(@)
+
     compareTo : (other) -> return @ - other
 
     getRandomArbitrary : (min, max)->

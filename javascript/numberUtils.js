@@ -21,6 +21,9 @@
     abs: function() {
       return Math.abs(this);
     },
+    sign: function() {
+      return this && this / Math.abs(this);
+    },
     compareTo: function(other) {
       return this - other;
     },
