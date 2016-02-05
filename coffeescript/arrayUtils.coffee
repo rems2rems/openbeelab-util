@@ -1,5 +1,5 @@
 
-utils = 
+utils =
     sum : ->
         
         return @reduce ((memo,n)->n+memo),0
@@ -23,23 +23,23 @@ utils =
 
     dup : -> @slice()
 
-    remove : (e) -> 
+    remove : (e) ->
         res = @dup()
         res.splice @indexOf(e), 1
         return res
     
-    removeAll : (other) -> 
-        @filter (e) -> 
+    removeAll : (other) ->
+        @filter (e) ->
             other.indexOf(e) < 0
 
-    unique: -> 
-        @filter (e, index, array) -> 
+    unique: ->
+        @filter (e, index, array) ->
             array.indexOf(e) == index
     
     max: ->
         return null if @.length == 0
         max = @[0]
-        @forEach (e) -> 
+        @forEach (e) ->
             if e?.isGreaterThan max
                 max = e
     
@@ -48,7 +48,7 @@ utils =
     min: ->
         return null if @.length == 0
         min = @[0]
-        @forEach (e) -> 
+        @forEach (e) ->
             if e?.isLesserThan min
                 min = e
         
@@ -65,10 +65,11 @@ utils =
             j = Math.floor Math.random() * (i + 1)
             # Swap `j` with `i`, using destructured assignment
             [@[i], @[j]] = [@[j], @[i]]
+        return @
 
     pickRandom : ->
         
-        if @length == 0 
+        if @length == 0
             return null
 
         i = Math.floor(Math.random() * @length)

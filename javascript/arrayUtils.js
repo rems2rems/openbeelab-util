@@ -104,13 +104,12 @@
       return this.indexOf(e) >= 0;
     },
     shuffle: function() {
-      var i, j, l, ref, ref1, results;
-      results = [];
+      var i, j, l, ref, ref1;
       for (i = l = ref = this.length - 1; ref <= 1 ? l <= 1 : l >= 1; i = ref <= 1 ? ++l : --l) {
         j = Math.floor(Math.random() * (i + 1));
-        results.push((ref1 = [this[j], this[i]], this[i] = ref1[0], this[j] = ref1[1], ref1));
+        ref1 = [this[j], this[i]], this[i] = ref1[0], this[j] = ref1[1];
       }
-      return results;
+      return this;
     },
     pickRandom: function() {
       var i;

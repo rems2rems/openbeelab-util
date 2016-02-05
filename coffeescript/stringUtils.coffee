@@ -1,7 +1,7 @@
 require("./arrayUtils").install()
 require("./numberUtils").install()
 
-utils = 
+utils =
 
     contains : (str) -> return @indexOf(str)>=0
 
@@ -24,7 +24,7 @@ utils =
         token = ""
         length.times ->
 
-            letter = ['a'..'z'].pickRandom()[['toLowerCase','toUpperCase'].pickRandom()]()
+            letter = 'abcdefghijklmnopqrstuvwxyz'.split('').pickRandom()[['toLowerCase','toUpperCase'].pickRandom()]()
             digit = [0..9].pickRandom()
             token += [letter,digit].pickRandom()
 

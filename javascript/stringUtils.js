@@ -36,12 +36,8 @@
       var token;
       token = "";
       length.times(function() {
-        var digit, i, letter, results;
-        letter = (function() {
-          results = [];
-          for (var i = 'a'; 'a' <= 'z' ? i <= 'z' : i >= 'z'; 'a' <= 'z' ? i++ : i--){ results.push(i); }
-          return results;
-        }).apply(this).pickRandom()[['toLowerCase', 'toUpperCase'].pickRandom()]();
+        var digit, letter;
+        letter = 'abcdefghijklmnopqrstuvwxyz'.split('').pickRandom()[['toLowerCase', 'toUpperCase'].pickRandom()]();
         digit = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].pickRandom();
         return token += [letter, digit].pickRandom();
       });
